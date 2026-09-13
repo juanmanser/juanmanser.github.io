@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juan Manuel Tejera — Analytics &amp; Data Science</title>
+<meta name="description" content="Juan Manuel Tejera — Forecasting, inferencia causal y modelos bayesianos aplicados a negocio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F1F2ED;
+    --panel: #E7E6DC;
+    --ink: #1B2420;
+    --ink-soft: #4A554E;
+    --rule: #C9CABE;
+    --teal: #2F6F6B;
+    --ochre: #A9762F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  header.hero{
+    padding:72px 0 48px;
+  }
+  h1{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    font-size:clamp(2.1rem, 5vw, 2.9rem);
+    line-height:1.15;
+    margin:0 0 6px;
+  }
+  .role{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin:0 0 28px;
+  }
+  .sparkline{
+    display:block;
+    margin:0 0 28px;
+    width:220px;
+    height:56px;
+  }
+  .sparkline path{
+    fill:none;
+    stroke:var(--teal);
+    stroke-width:2.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:340;
+    stroke-dashoffset:340;
+    animation:draw 1.6s ease-out forwards .2s;
+  }
+  .sparkline circle{
+    fill:var(--ochre);
+    opacity:0;
+    animation:fadein .4s ease-out forwards 1.7s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fadein{ to{ opacity:1; } }
+  @media (prefers-reduced-motion: reduce){
+    .sparkline path{ stroke-dashoffset:0; animation:none; }
+    .sparkline circle{ opacity:1; animation:none; }
+  }
+  .summary{
+    font-size:1.08rem;
+    max-width:56ch;
+    margin:0 0 32px;
+  }
+  .ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 24px;
+    align-items:center;
+  }
+  .cta-primary{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--bg);
+    text-decoration:none;
+    padding:11px 20px;
+    border-radius:3px;
+    font-size:0.95rem;
+  }
+  .cta-secondary{
+    font-size:0.95rem;
+    text-decoration-color:var(--rule);
+    text-underline-offset:3px;
+  }
+  section{
+    padding:40px 0;
+    border-top:1px solid var(--rule);
+  }
+  h2{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    font-size:1.4rem;
+    margin:0 0 28px;
+  }
+  .role-block{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:4px 20px;
+    margin-bottom:30px;
+  }
+  .role-block:last-child{margin-bottom:0;}
+  .dates{
+    color:var(--ink-soft);
+    font-size:0.88rem;
+    padding-top:3px;
+  }
+  .role-title{
+    font-weight:600;
+    margin:0 0 2px;
+  }
+  .role-org{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin:0 0 10px;
+  }
+  .role-block ul{
+    margin:0;
+    padding-left:18px;
+  }
+  .role-block li{margin-bottom:6px;}
+  .role-block li:last-child{margin-bottom:0;}
+  @media (max-width:560px){
+    .role-block{grid-template-columns:1fr;}
+    .dates{padding-top:0;}
+  }
+  .skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 10px;
+    padding:0;
+    margin:0;
+    list-style:none;
+  }
+  .skills li{
+    background:var(--panel);
+    padding:6px 12px;
+    border-radius:3px;
+    font-size:0.88rem;
+  }
+  .edu-list{
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  .edu-list li{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:9px 0;
+    border-bottom:1px solid var(--rule);
+    font-size:0.94rem;
+  }
+  .edu-list li:last-child{border-bottom:none;}
+  .edu-year{color:var(--ink-soft); white-space:nowrap; font-size:0.88rem;}
+  .projects{
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  .projects li{
+    padding:14px 0;
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+  }
+  .projects li:last-child{border-bottom:none;}
+  .proj-name{font-weight:500;}
+  .proj-status{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  footer{
+    padding:36px 0 60px;
+    color:var(--ink-soft);
+    font-size:0.9rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 18px;
+  }
+  footer a{color:var(--ink-soft); text-decoration-color:var(--rule);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <h1>Juan Manuel Tejera</h1>
+    <p class="role">Analytics &amp; Data Science Specialist</p>
+
+    <svg class="sparkline" viewBox="0 0 220 56" aria-hidden="true">
+      <path d="M4,44 C 30,42 40,20 62,24 S 96,40 118,18 S 156,6 178,14 S 206,26 216,10" />
+      <circle cx="216" cy="10" r="3.5"/>
+    </svg>
+
+    <p class="summary">Más de 10 años convirtiendo datos masivos en decisiones de negocio en fintech, banca y sector público: medición causal de campañas, modelos predictivos de riesgo y automatización de pipelines analíticos con Python.</p>
+
+    <div class="ctas">
+      <a class="cta-primary" href="https://github.com/juanmanser">Ver portfolio en GitHub</a>
+      <a class="cta-secondary" href="#experiencia">Experiencia</a>
+      <a class="cta-secondary" href="mailto:juanmanser@gmail.com">Contacto</a>
+    </div>
+  </header>
+
+  <section id="experiencia">
+    <h2>Experiencia</h2>
+
+    <div class="role-block">
+      <div class="dates">Mar 2025 — actualidad</div>
+      <div>
+        <p class="role-title">Marketing Analytics Specialist</p>
+        <p class="role-org">Mercado Libre / Mercado Pago</p>
+        <ul>
+          <li>Automatizó modelos bayesianos de medición de campañas, reduciendo el ciclo de 30 a 10 días (-67%).</li>
+          <li>Integró APIs internas y plataformas de encuestas en una única fuente analítica.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role-block">
+      <div class="dates">Abr 2022 — Mar 2025</div>
+      <div>
+        <p class="role-title">Sr. Marketing Analyst</p>
+        <p class="role-org">Mercado Libre / Mercado Pago</p>
+        <ul>
+          <li>Midió el impacto de ~40 campañas con inferencia causal, grupos de control y forecasting.</li>
+          <li>Desarrolló Text Analytics y Sentiment Analysis con NLP.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role-block">
+      <div class="dates">Oct 2020 — Abr 2022</div>
+      <div>
+        <p class="role-title">Analista de Crédito</p>
+        <p class="role-org">Banco Patagonia</p>
+        <ul>
+          <li>Gestionó la calificación crediticia de 60.000 PyMEs, expandiendo la base un 15% sin subir la mora.</li>
+          <li>Modelos predictivos de propensión de pago y scoring con Python, SQL y SPSS Modeler.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role-block">
+      <div class="dates">Abr 2008 — Oct 2020</div>
+      <div>
+        <p class="role-title">Analista de Marketing</p>
+        <p class="role-org">Correo Oficial de la República Argentina</p>
+        <ul>
+          <li>Forecasting de ventas (Prophet) para el 100% de la organización, error &lt;5%.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>Proyectos de portfolio</h2>
+    <ul class="projects">
+      <li><span class="proj-name">Series temporales</span><span class="proj-status">próximamente</span></li>
+      <li><span class="proj-name">Incrementalidad causal</span><span class="proj-status">próximamente</span></li>
+      <li><span class="proj-name">Dashboard Garmin</span><span class="proj-status">próximamente</span></li>
+    </ul>
+  </section>
+
+  <section id="skills">
+    <h2>Habilidades</h2>
+    <ul class="skills">
+      <li>Python</li><li>SQL</li><li>R</li><li>Prophet</li>
+      <li>Inferencia causal</li><li>Modelos bayesianos</li>
+      <li>NLP</li><li>Segmentación &amp; clustering</li>
+      <li>Power BI</li><li>ETL</li><li>Git / GitHub</li>
+    </ul>
+  </section>
+
+  <section id="educacion">
+    <h2>Educación</h2>
+    <ul class="edu-list">
+      <li><span>Maestría en Explotación de Datos y Descubrimiento del Conocimiento — UBA</span><span class="edu-year">en curso</span></li>
+      <li><span>Diplomatura en Análisis de Datos — UAI</span><span class="edu-year">2017</span></li>
+      <li><span>Especialización en Inteligencia Comercial — UTDT</span><span class="edu-year">2016</span></li>
+      <li><span>Sociología (Prof. y Lic.) — UBA</span><span class="edu-year">2014–2015</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Buenos Aires, Argentina</span>
+    <a href="https://github.com/juanmanser">github.com/juanmanser</a>
+    <a href="mailto:juanmanser@gmail.com">juanmanser@gmail.com</a>
+  </footer>
+</div>
+
+</body>
+</html>
